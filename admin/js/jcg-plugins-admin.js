@@ -1,8 +1,8 @@
-(function( $ ) {
+(function($) {
   'use strict';
 
-  if ( $('body').hasClass('media_page_jcg_flickr') ) {
-    $('.jcg-flickr-img').click( function (event) {
+  if ($('body').hasClass('media_page_jcg_flickr')) {
+    $('.jcg-flickr-img').click(function(event) {
       event.preventDefault();
       var photoID = $(this).data('id');
       var apiKey = $('#jcg-flickr-gallery').data('apikey');
@@ -10,7 +10,7 @@
     });
   }
 
-  function requestImgData (id, key) {
+  function requestImgData(id, key) {
     var $container = $('.jcg-flickr-data-container');
     var url = 'https://api.flickr.com/services/rest/?api_key=' + key +
               '&method=flickr.photos.getSizes' +
@@ -20,13 +20,13 @@
 
     $container.html('requesting data...');
 
-    $.getJSON(url, function (res) {
+    $.getJSON(url, function(res) {
       $container.html('success!');
-    }).done( function (data) {
+    }).done(function(data) {
       var sizes = data.sizes.size;
       var response = '<table>';
 
-      $.each(sizes, function (index, value) {
+      $.each(sizes, function(index, value) {
         response = response + '<tr>' +
                    '<td><a href="' + value.source + '" target="_blank">' +
                    '<span class="dashicons dashicons-format-image"></span>' +
@@ -40,10 +40,10 @@
 
       $container.html(response);
 
-    }).fail( function (err) {
+    }).fail(function(err) {
       console.log(err);
     });
 
   }
 
-})( jQuery );
+})(jQuery);

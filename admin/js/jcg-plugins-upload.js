@@ -2,18 +2,18 @@
   function renderMediaUploader() {
     // 'use strict';
 
-    var file_frame, image_data;
+    var fileFrame;
 
     /**
      * If an instance of file_frame already exists, then we can open it
      * rather than creating a new instance.
      */
-    if ( undefined !== file_frame ) {
-      file_frame.open();
+    if (undefined !== fileFrame) {
+      fileFrame.open();
       return;
     }
 
-    file_frame = wp.media.frames.file_frame = wp.media({
+    fileFrame = wp.media.frames.file_frame = wp.media({
       title: 'Profile Picture',
       button: {
         text: 'Update',
@@ -29,16 +29,16 @@
      * Since we're using the 'view' state when initializing the file_frame,
      * we need to make sure that the handler is attached to the insert event.
      */
-    file_frame.on( 'insert', function () {
-      var data       = file_frame.state().get('selection').first().toJSON();
-      var $container = $('#profile-image-container');
+    fileFrame.on('insert', function() {
+      var data       = fileFrame.state().get('selection').first().toJSON();
+      var $container = $('#jcg-profile-image-container');
 
-      if ( data.url.length <= 0  ) {
+      if (data.url.length <= 0) {
         return;
       }
 
       var imgURL = data.url;
-      if ( data.sizes.hasOwnProperty('jcg-1200x630') ) {
+      if (data.sizes.hasOwnProperty('jcg-1200x630')) {
         imgURL = data.sizes['jcg-1200x630'].url;
       }
 
@@ -46,19 +46,18 @@
 
       assignProfileImage(imgURL, data.caption, data.title);
 
-
-    // Next, hide the anchor responsible for allowing the user to select an image
-    $container
-        .prev()
-        .hide();
+      // Next, hide the anchor responsible for allowing the user to select an image
+      $container
+          .prev()
+          .hide();
     });
 
     // Now display the actual file_frame
-    file_frame.open();
+    fileFrame.open();
 
   }
 
-  function assignProfileImage (url, caption, title) {
+  function assignProfileImage(url, caption, title) {
     var $image = $('#profile-image');
     var $input = $('#profile-image-input');
 
@@ -69,7 +68,7 @@
     $image.parent().removeClass('hidden');
   }
 
-  $(function () {
+  $(function() {
     if ($('#profile-image-input').val().length > 0) {
       var profileImageUrl = $('#profile-image-input').val();
       var profileImageCaption = $('#profile-image').attr('alt');
@@ -77,7 +76,7 @@
       assignProfileImage(profileImageUrl, profileImageCaption, profileImageTitle);
     }
 
-    $('#assign-profile-image').on( 'click', function (event) {
+    $('#assign-profile-image').on('click', function(event) {
       event.preventDefault();
 
       renderMediaUploader();
