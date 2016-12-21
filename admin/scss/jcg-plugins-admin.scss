@@ -1,9 +1,11 @@
-.jcg-flickr-data-container a {
-  text-decoration: none;
-}
+.jcg-flickr-data-container {
+  a {
+    text-decoration: none;
+  }
 
-.jcg-flickr-data-container p {
-  margin: 0 !important;
+  p {
+    margin: 0 !important;
+  }
 }
 
 .jcg-admin-nav {
@@ -19,4 +21,11 @@
 
 .jcg-admin-nav-item.current {
   border-color: #CCC;
+}
+
+#jcg-profile-image-container {
+  img {
+    width: 30%;
+    height: auto;
+  }
 }
