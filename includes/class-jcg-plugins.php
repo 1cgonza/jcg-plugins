@@ -72,7 +72,6 @@ class JCG_Plugins {
 
     $this->load_dependencies();
     $this->define_admin_hooks();
-    $this->define_public_hooks();
   }
 
   /**
@@ -88,7 +87,6 @@ class JCG_Plugins {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jcg-plugins-loader.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-jcg-plugins-admin.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/cv/class-jcg-plugins-cv.php';
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-jcg-plugins-public.php';
 
     $this->loader = new JCG_Plugins_Loader();
   }
@@ -113,20 +111,6 @@ class JCG_Plugins {
     $this->loader->add_filter( 'login_headerurl', $plugin_admin, 'login_url' );
     $this->loader->add_filter( 'login_headertitle', $plugin_admin, 'login_title' );
     $this->loader->add_filter( 'pre_get_posts', $plugin_admin, 'add_custom_types_to_archives' );
-  }
-
-  /**
-   * Register all of the hooks related to the public-facing functionality
-   * of the plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
-  private function define_public_hooks() {
-    $plugin_public = new JCG_Plugins_Public( $this->get_plugin_name(), $this->get_version() );
-
-    $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-    $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
   }
 
   /**
