@@ -12,6 +12,7 @@
  * Version:           1.0.0
  * Author:            Juan Camilo Gonzalez
  * Author URI:        http://juancgonzalez.com
+ * GitHub Plugin URI: https://github.com/1cgonza/jcg-plugins
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       jcg-plugins
