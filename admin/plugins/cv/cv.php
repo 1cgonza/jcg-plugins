@@ -1,145 +1,139 @@
 <?php
-  class JCGCV {
-    public function __construct($category) {
-      $this->content = '';
-      $this->category = $category;
-      $this->separator = ', ';
-      $this->date_format = 'Y';
-    }
+$prefix = '_cv_';
 
-    public function render() {
-      $args = array (
-        'post_type'      => 'cv_meta',
-        'cv_cat'         => $this->category,
-        'posts_per_page' => -1,
-        'meta_key'       => 'date_end',
-        'orderby'        => 'meta_value_num',
-        'order'          => 'DESC'
-      );
-      $cvMetaQuery = new WP_Query($args);
+$general = new_cmb2_box(array(
+  'id'            => $prefix . 'general',
+  'title'         => 'General',
+  'object_types'  => array( 'cv_meta' ), // Post type
+  'context'       => 'normal',
+  'priority'      => 'high',
+  'show_names'    => true,
+));
 
-      $HTML = '';
-      if ( $cvMetaQuery->have_posts() ) {
-        $this->parent_category_data = get_term_by('slug', $this->category, 'cv_cat');
-        $HTML .= '<h2 id="jcg-cv-section-' . $this->category . '">' . $this->parent_category_data->name . '</h2>';
-        $HTML .= '<table class="jcg-cv-table"><tbody>';
-          while ( $cvMetaQuery->have_posts() ) : $cvMetaQuery->the_post();
-            $HTML .= $this->jcg_cv_get_item( get_the_ID() );
-          endwhile; wp_reset_postdata();
-        $HTML .= '</tbody></table>';
-      } else {
-        return '';
-      }
+$general->add_field(array(
+  'id'      => $prefix . 'website_url',
+  'name'    => 'Website URL',
+  'type'    => 'text_url'
+));
 
-      return $HTML;
-    }
+$general->add_field(array(
+  'id'      => $prefix . 'date_current',
+  'name'    => 'Website URL',
+  'desc'    => 'If this item has no end date, use this checkbox to add the word "Currently" instead of the end date',
+  'type'    => 'checkbox'
+));
 
-    public function jcg_cv_get_item($postID) {
-      $postData = get_post_custom($postID);
-      $cvItemType = '';
-      $url = $postData['website_url'][0];
-      $title = get_the_title();
-      $currentCheck = !empty( $postData['jcg_cv_date_current'][0] ) ? $postData['jcg_cv_date_current'][0] : '0';
-      $cvItemDate = $this->jcg_cv_get_date($postData['date_start'][0], $postData['date_end'][0], $currentCheck);
+$general->add_field(array(
+  'id'      => $prefix . 'date_start',
+  'name'    => 'Date start',
+  'type'    => 'text_date_timestamp'
+));
 
-      $cvItemFields = [];
+$general->add_field(array(
+  'id'      => $prefix . 'date_end',
+  'name'    => 'Date end',
+  'type'    => 'text_date_timestamp'
+));
 
-      if ($this->category == 'education') {
-        $cvItemType = $postData['degree'][0];
-      } else {
-        $cvItemType = $this->jcg_cv_get_item_type($postID);
-      }
+$general->add_field(array(
+  'id'      => $prefix . 'city',
+  'name'    => 'City',
+  'type'    => 'text'
+));
 
-      if ( $this->category == 'awards' && !empty($postData['award_title'][0]) ) {
-        $cvItemFields['award_title'] = '<span class="jcg-cv-award-title">' . $postData['award_title'][0] . '</span>';
-      }
+$general->add_field(array(
+  'id'      => $prefix . 'country',
+  'name'    => 'Country',
+  'type'    => 'text'
+));
 
-      if ( !empty($title) ) {
-        $wrapTitle = !empty($url) ? '<a href="' . $url . '" target="_blank">' . $title . '</a>' : $title;
-        $cvItemFields['title'] = '<span class="jcg-cv-title">' . $wrapTitle . '</span>';
-      }
+$general->add_field(array(
+  'id'      => $prefix . 'institution',
+  'name'    => 'Institution',
+  'type'    => 'text'
+));
 
-      /*==========  DESCRIPTION  ==========*/
-      $description = '';
-      if ( !empty($postData['jcg_cv_item_description'][0]) ) {
-        $description = '<div class="jcg-cv-item-description">' . apply_filters('the_content', $postData['jcg_cv_item_description'][0]) . '</div>';
-      }
+$general->add_field(array(
+  'id'               => $prefix . 'award_type',
+  'name'             => 'Award type',
+  'type'             => 'select',
+  'show_option_none' => true,
+  'options'          => array(
+    'honour' => 'Honour',
+    'winner' => 'Winner'
+  )
+));
 
-      /*==========  INSTITUTION  ==========*/
-      if ( !empty($postData['institution'][0]) ) {
-        $cvItemFields['institution'] = '<span class="jcg-cv-item-intitution">' . $postData['institution'][0] . '</span>';
-      }
+$general->add_field(array(
+  'id'      => $prefix . 'award_title',
+  'name'    => 'Award Title',
+  'type'    => 'text'
+));
 
-      /*==========  PLACE  ==========*/
-      $city    = !empty( $postData['city'][0] )    ? $postData['city'][0]    : NULL;
-      $country = !empty( $postData['country'][0] ) ? $postData['country'][0] : NULL;
+$general->add_field(array(
+  'id'      => $prefix . 'description',
+  'name'    => 'Description',
+  'type'    => 'wysiwyg',
+  'options' => array(
+    'textarea_rows' => 10
+  )
+));
 
-      if ( strcmp($city, $country) !== 0 ) {
-        $cityCheck = empty($city) ? '' : $city . $this->separator;
-        $cvItemFields['place'] = '<span class="jcg-cv-item-place">' . $cityCheck . $country . '</span>';
-      } else {
-        $cvItemFields['place'] = '<span class="jcg-cv-item-place">' . $country . '</p>';
-      }
+$general->add_field(array(
+  'id'      => $prefix . 'catalogue',
+  'name'    => 'Catalogue',
+  'type'    => 'file',
+  'options' => array(
+    'url' => false, // Hide the text input for the url
+  ),
+));
 
-      $educationItem = '<tr class="jcg-cv-item">';
-        $educationItem .= '<td class="jcg-cv-item-col1 years">' . $cvItemDate . '</td>';
-        $educationItem .= '<td class="jcg-cv-item-col2 education-info">';
+$project = new_cmb2_box(array(
+  'id'            => $prefix . 'project',
+  'title'         => 'Project',
+  'object_types'  => array( 'cv_meta' ), // Post type
+  'context'       => 'normal',
+  'priority'      => 'high',
+  'show_names'    => true,
+));
 
-          if ( !empty($cvItemType) ) {
-            $educationItem .= '<span class="jcg-cv-item-type">' . $cvItemType . '</span>';
-          }
-          if ( !empty($cvItemFields) ) {
-            $educationItem .= implode($this->separator, $cvItemFields);
-          }
-          if ( !empty($description) ) {
-            $educationItem .= $description;
-          }
-        $educationItem .= '</td>'; // end .jcg-cv-item-col2
-      $educationItem .= '</tr>'; // end .jcg-cv-item
+$project->add_field(array(
+  'name'              => 'Related Project',
+  'id'                => $prefix . 'related_project',
+  'type'              => 'multicheck',
+  'select_all_button' => false,
+  'options'           => cv_get_posts_as_multicheck_options( array('films', 'experiments') )
+));
 
-      return $educationItem;
-    }
+$edu = new_cmb2_box(array(
+  'id'            => $prefix . 'education',
+  'title'         => 'Education',
+  'object_types'  => array( 'cv_meta' ), // Post type
+  'context'       => 'normal',
+  'priority'      => 'high',
+  'show_names'    => true,
+));
 
-    public function jcg_cv_get_item_type($postID) {
-      $cvType    = '';
-      $childrens = [];
-      $postTerms = get_the_terms($postID, 'cv_cat');
+$edu->add_field(array(
+  'id'      => $prefix . 'degree',
+  'name'    => 'Degree',
+  'type'    => 'text',
+  'attributes' => array(
+    'placeholder' => 'BFA, MFA, PhD ...'
+  )
+));
 
-      foreach ($postTerms as $term) {
-        if ( term_is_ancestor_of($this->parent_category_data->term_id, $term->term_id, 'cv_cat') ) {
-          $childrens[] = '<span class="jcg-cv-item-type jcg-cv-item-type-' . $this->category . ' jcg-cv-item-type-' . $this->category . '-' . $term->slug . '">' . $term->name . '</span>';
-        }
-      }
+$appointments = new_cmb2_box(array(
+  'id'            => $prefix . 'appointments',
+  'title'         => 'Appointments',
+  'object_types'  => array( 'cv_meta' ), // Post type
+  'context'       => 'normal',
+  'priority'      => 'high',
+  'show_names'    => true,
+));
 
-      if ( !empty($childrens) ) {
-        $cvType = implode('- ', $childrens);
-      }
-
-      return $cvType;
-    }
-
-    public function jcg_cv_get_date($dateStart, $dateEnd, $currentCheck) {
-      $date = '';
-      if ( !empty($dateStart) ) {
-        $startUNIX = strtotime($dateStart);
-        $startYear = date_i18n($this->date_format, $startUNIX);
-        $datesRange = $startYear;
-
-        if ($currentCheck == '1') {
-          $datesRange .= ' - ' . 'Currently';
-        }
-        elseif ( !empty($dateEnd) ) {
-          $endUNIX = strtotime($dateEnd);
-          $endYear = date_i18n($this->date_format, $endUNIX);
-
-          if ( strcmp($startYear, $endYear) ) {
-            $datesRange .= ' - ' . $endYear;
-          }
-        }
-
-        $date = $datesRange;
-      }
-
-      return $date;
-    }
-  }
+$appointments->add_field(array(
+  'id'      => $prefix . 'position',
+  'name'    => 'Position',
+  'type'    => 'text'
+));

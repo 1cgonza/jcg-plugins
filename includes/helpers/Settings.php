@@ -4,6 +4,7 @@ class JCG_Settings {
     $this->ID = $id;
     $this->name = $name;
     $this->page = $page;
+
     add_settings_section($id, $title, $cb, $page);
     $this->register();
   }

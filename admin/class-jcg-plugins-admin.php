@@ -9,6 +9,51 @@ class JCG_Plugins_Admin {
     $this->version = $version;
   }
 
+  public function edit_cv_meta_columns($columns) {
+    $columns = array(
+      'cb'            => '<input type="checkbox" />',
+      'title'         => 'CV Item',
+      'country'       => 'Country',
+      'project'       => 'Project',
+      'cv_categories' => 'CV Categories',
+      'date'          => 'Date'
+    );
+    return $columns;
+  }
+
+  public function manage_cv_meta_columns($column, $post_id) {
+    global $post;
+
+    if ($column == 'country') {
+      $country = get_post_meta($post_id, '_cv_country', true);
+      echo empty($country) ? 'Unknown' : $country;
+    }
+    elseif ($column == 'project') {
+      $films       = get_post_meta($post_id, '_cv_related_project', true);
+      $ret = '';
+
+      if ( !empty($films) ) {
+        foreach ($films as $film) {
+          $ret .= '<a href="' . get_permalink($film) . '">' . get_the_title($film) . '</a><br />';
+        }
+      }
+      echo $ret;
+    }
+    elseif ($column == 'cv_categories') {
+      $terms = get_the_terms($post_id, 'cv_cat');
+      if ( empty($terms) ) {
+        echo 'No CV Categories';
+      } else {
+        $termsReturn = '';
+        foreach ($terms as $term) {
+          $url = esc_url( add_query_arg( array('post_type' => $post->post_type, 'cv_cat' => $term->slug), 'edit.php' ) );
+          $termsReturn .= '<a href="' . $url . '">' . $term->name . '</a><br />';
+        }
+        echo $termsReturn;
+      }
+    }
+  }
+
   public function register_post_types() {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/jcg-plugins-post-types.php';
   }
@@ -27,6 +72,14 @@ class JCG_Plugins_Admin {
 
   public function login_title() {
     return get_option('blogname');
+  }
+
+  public function cv_metaboxes() {
+    if ( !function_exists('new_cmb2_box') ) {
+      return;
+    }
+
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/plugins/cv/cv.php';
   }
 
   public function add_custom_types_to_archives ($query) {

@@ -60,8 +60,7 @@ register_post_type( 'cv_meta',
     'has_archive'         => false,
     'capability_type'     => 'post',
     'hierarchical'        => false,
-    'supports'            => array('title', 'author', 'thumbnail'),
-    'taxonomies'          => array('post_tag')
+    'supports'            => array('title', 'author', 'thumbnail')
   )
 );
 

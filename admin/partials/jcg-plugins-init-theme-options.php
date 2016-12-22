@@ -1,14 +1,12 @@
 <?php
-  remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Comments Widget
-  remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'core' );  // Incoming Links Widget
-  remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' );         // Plugins Widget
-  remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' );   // Recent Drafts Widget
-  remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );         //
-  remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );       //
-  // removing plugin dashboard boxes
-  remove_meta_box( 'yoast_db_widget', 'dashboard', 'normal' );         // Yoast's SEO Plugin Widget
+  $general = new JCG_Settings(
+    'general_section',  // Section ID
+    '',                 // Section Title
+    '',                 // Section Callback
+    'jcg_options',      // Page where to display section
+    'jcg_theme_options' // Setting name: how it gets saved on the DB
+  );
 
-  $general = new JCG_Settings('general_section', '', '', 'jcg_options', 'jcg_theme_options');
   $general->addField(
     'default_image',
     'Default Image',
@@ -22,7 +20,14 @@
   );
 
   /*==========  ABOUT  ==========*/
-  $about = new JCG_Settings('about_section', '', '', 'jcg_about', 'jcg_about_bio');
+  $about = new JCG_Settings(
+    'about_section',    // Section ID
+    '',                 // Section Title
+    '',                 // Section Callback
+    'jcg_about',        // Page where to display section
+    'jcg_about_options' // Setting name: how it gets saved on the DB
+  );
+
   $about->addField(
     'jcg_about_contact',
     'Contact',
