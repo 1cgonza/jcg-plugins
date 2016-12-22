@@ -7,16 +7,6 @@
   $perPage     = 20;
   $imagesArray = $flickr->get_images_list($perPage, $currentPage);
 
-  if ( isset($_GET['photo_id']) ) {
-    $imageSizes = $flickr->get_image_sizes( $_GET['photo_id'] );
-
-    if ( is_array($imageSizes) ) {
-      $flickr->render_sizes_data($imageSizes);
-    } else {
-      echo 'Error getting data from image with ID: ' . $_GET['photo_id'];
-    }
-  }
-
   /*==================================
   =            PAGINATION            =
   ==================================*/

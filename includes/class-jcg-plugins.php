@@ -17,7 +17,7 @@ class JCG_Plugins {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/jcg-plugins-functions.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-jcg-plugins-loader.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-jcg-plugins-admin.php';
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/cv/class-jcg-plugins-cv.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/plugins/cv/cv.php';
 
     $this->loader = new JCG_Plugins_Loader();
   }

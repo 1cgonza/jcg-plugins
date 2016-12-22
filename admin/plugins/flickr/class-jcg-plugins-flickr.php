@@ -49,21 +49,6 @@ class Flickr_API {
     }
   }
 
-  public function get_image_sizes($photo_id) {
-    $params = array(
-      'api_key'  => $this->api_key,
-      'photo_id' => $photo_id,
-      'method'   => 'flickr.photos.getSizes',
-      'format'   => 'php_serial'
-    );
-
-    $encoded_params = $this->encode_params($params);
-    var_dump($encoded_params);
-    $imageSizes = $this->make_api_request($encoded_params);
-
-    return $imageSizes;
-  }
-
   public function encode_params($params) {
     $encoded_params = array();
 

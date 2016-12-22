@@ -5,11 +5,9 @@
       $this->category = $category;
       $this->separator = ', ';
       $this->date_format = 'Y';
-
-      $this->jcg_query_cv_meta();
     }
 
-    public function jcg_query_cv_meta() {
+    public function render() {
       $args = array (
         'post_type'      => 'cv_meta',
         'cv_cat'         => $this->category,
@@ -20,19 +18,20 @@
       );
       $cvMetaQuery = new WP_Query($args);
 
+      $HTML = '';
       if ( $cvMetaQuery->have_posts() ) {
         $this->parent_category_data = get_term_by('slug', $this->category, 'cv_cat');
-        $this->content = '<h2 id="jcg-cv-section-' . $this->category . '">' . $this->parent_category_data->name . '</h2>';
-        $this->content .= '<table class="jcg-cv-table"><tbody>';
+        $HTML .= '<h2 id="jcg-cv-section-' . $this->category . '">' . $this->parent_category_data->name . '</h2>';
+        $HTML .= '<table class="jcg-cv-table"><tbody>';
           while ( $cvMetaQuery->have_posts() ) : $cvMetaQuery->the_post();
-            $this->content .= $this->jcg_cv_get_item( get_the_ID() );
+            $HTML .= $this->jcg_cv_get_item( get_the_ID() );
           endwhile; wp_reset_postdata();
-        $this->content .= '</tbody></table>';
+        $HTML .= '</tbody></table>';
       } else {
         return '';
       }
 
-      return $this->content;
+      return $HTML;
     }
 
     public function jcg_cv_get_item($postID) {
