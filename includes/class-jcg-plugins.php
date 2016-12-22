@@ -7,7 +7,7 @@ class JCG_Plugins {
 
   public function __construct() {
     $this->plugin_name = 'jcg-plugins';
-    $this->version = '1.0.0';
+    $this->version = '1.0.1';
 
     $this->load_dependencies();
     $this->define_admin_hooks();
