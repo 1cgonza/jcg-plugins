@@ -27,9 +27,9 @@
   );
 
   function render_theme_options_pages() {
-    require_once 'jcg-plugins-options-page.php';
+    require_once dirname( __FILE__ ) . '/options/display-page.php';
   }
 
   function render_flickr() {
-    require_once 'flickr/jcg-plugins-flickr.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'plugins/flickr/flickr.php';
   }
