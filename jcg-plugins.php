@@ -9,7 +9,7 @@
  * Plugin Name:       JCG Plugins
  * Plugin URI:        https://github.com/1cgonza/wp-jcg-plugins
  * Description:       A set of plugins and theme options for a portfolio website.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Juan Camilo Gonzalez
  * Author URI:        http://juancgonzalez.com
  * GitHub Plugin URI: https://github.com/1cgonza/jcg-plugins
