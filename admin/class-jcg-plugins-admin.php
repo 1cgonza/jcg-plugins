@@ -27,8 +27,7 @@ class JCG_Plugins_Admin {
     if ($column == 'country') {
       $country = get_post_meta($post_id, '_cv_country', true);
       echo empty($country) ? 'Unknown' : $country;
-    }
-    elseif ($column == 'project') {
+    } elseif ($column == 'project') {
       $films       = get_post_meta($post_id, '_cv_related_project', true);
       $ret = '';
 
@@ -38,9 +37,9 @@ class JCG_Plugins_Admin {
         }
       }
       echo $ret;
-    }
-    elseif ($column == 'cv_categories') {
+    } elseif ($column == 'cv_categories') {
       $terms = get_the_terms($post_id, 'cv_cat');
+      
       if ( empty($terms) ) {
         echo 'No CV Categories';
       } else {

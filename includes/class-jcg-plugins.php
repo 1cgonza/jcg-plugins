@@ -25,21 +25,21 @@ class JCG_Plugins {
   private function define_admin_hooks() {
     $plugin_admin = new JCG_Plugins_Admin( $this->get_plugin_name(), $this->get_version() );
 
-    $this->loader->add_action( 'init', $plugin_admin, 'register_post_types' );
-    $this->loader->add_action( 'admin_menu', $plugin_admin, 'register_theme_options_pages' );
-    $this->loader->add_action( 'admin_init', $plugin_admin, 'init_theme_options' );
-    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-    $this->loader->add_action( 'login_enqueue_scripts', $plugin_admin, 'enqueue_login_styles' );
+    $this->loader->add_action('init', $plugin_admin, 'register_post_types');
+    $this->loader->add_action('admin_menu', $plugin_admin, 'register_theme_options_pages');
+    $this->loader->add_action('admin_init', $plugin_admin, 'init_theme_options');
+    $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+    $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+    $this->loader->add_action('login_enqueue_scripts', $plugin_admin, 'enqueue_login_styles');
 
-    $this->loader->add_filter( 'login_headerurl', $plugin_admin, 'login_url' );
-    $this->loader->add_filter( 'login_headertitle', $plugin_admin, 'login_title' );
-    $this->loader->add_filter( 'pre_get_posts', $plugin_admin, 'add_custom_types_to_archives' );
+    $this->loader->add_filter('login_headerurl', $plugin_admin, 'login_url');
+    $this->loader->add_filter('login_headertitle', $plugin_admin, 'login_title');
+    $this->loader->add_filter('pre_get_posts', $plugin_admin, 'add_custom_types_to_archives');
 
-    $this->loader->add_filter( 'manage_edit-cv_meta_columns', $plugin_admin, 'edit_cv_meta_columns');
+    $this->loader->add_filter('manage_edit-cv_meta_columns', $plugin_admin, 'edit_cv_meta_columns');
     $this->loader->add_action('manage_cv_meta_posts_custom_column', $plugin_admin, 'manage_cv_meta_columns', 10, 2);
 
-    $this->loader->add_filter( 'cmb2_admin_init', $plugin_admin, 'cv_metaboxes' );
+    $this->loader->add_filter('cmb2_admin_init', $plugin_admin, 'cv_metaboxes');
   }
 
   public function run() {
